@@ -1,19 +1,25 @@
+import os
 import time
 import random
 import pymysql
 import pandas as pd
+from dotenv import load_dotenv
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.action_chains import ActionChains
 from webdriver_manager.chrome import ChromeDriverManager
 
-DB_HOST = '127.0.0.1'
-DB_USER = 'root'
-DB_PASSWORD = '1234' # 사용하시는 비밀번호로 변경해주세요
-DB_NAME = 'korea_car'
+# .env 파일 로드
+load_dotenv()
+
+DB_HOST = os.getenv('DB_HOST')
+DB_USER = os.getenv('DB_USER')
+DB_PASSWORD = os.getenv('DB_PASSWORD')
+DB_NAME = os.getenv('DB_NAME')
 
 def init_db():
     conn = pymysql.connect(
@@ -40,7 +46,7 @@ def get_driver():
     chrome_options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36")
     chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
     chrome_options.add_experimental_option('useAutomationExtension', False)
-    # chrome_options.add_argument("--headless") # 필요시 주석 해제하여 백그라운드 실행
+    # chrome_options.add_argument("--headless")
     
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
     return driver
@@ -48,15 +54,15 @@ def get_driver():
 def random_sleep(min_sec=1.5, max_sec=2.5):
     time.sleep(random.uniform(min_sec, max_sec))
 
-# 화면 스크롤 후 자바스크립트 강제 클릭으로 안전성 극대화
 def safe_click(driver, element):
     driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", element)
     time.sleep(0.5)
-    driver.execute_script("arguments[0].click();", element)
+    try:
+        element.click()
+    except Exception:
+        driver.execute_script("arguments[0].click();", element)
 
-# ----------------------------------------------------
-# 1. 기아자동차 수집 함수 (페이징 완벽 대응)
-# ----------------------------------------------------
+# (기아 수집 함수)
 def fetch_kia_pages(driver, main_category, faq_data_list, collected_questions):
     page_num = 1
     while True:
@@ -76,7 +82,7 @@ def fetch_kia_pages(driver, main_category, faq_data_list, collected_questions):
                 
                 btn = item.find_element(By.CSS_SELECTOR, "button.cmp-accordion__button")
                 safe_click(driver, btn)
-                time.sleep(0.8) # 아코디언이 열리는 시간 대기
+                time.sleep(0.8) 
                 
                 panel = item.find_element(By.CSS_SELECTOR, ".cmp-accordion__panel")
                 answer = driver.execute_script("return arguments[0].innerText || arguments[0].textContent;", panel).strip()
@@ -93,7 +99,6 @@ def fetch_kia_pages(driver, main_category, faq_data_list, collected_questions):
             except Exception:
                 continue
                 
-        # [기아 페이징] 하단의 1, 2, 3.. 번호를 직접 찾아 클릭
         try:
             active_page_elem = driver.find_element(By.CSS_SELECTOR, "ul.paging-list li.is-active a")
             next_page_str = str(int(active_page_elem.text.strip()) + 1)
@@ -108,43 +113,42 @@ def fetch_kia_pages(driver, main_category, faq_data_list, collected_questions):
                     break
             
             if not clicked:
-                break # 다음 페이지 번호가 없으면 루프 종료
+                break 
         except Exception:
             break
 
-# ----------------------------------------------------
-# 2. 현대자동차 수집 함수 (객체 증발 및 페이징 완벽 대응)
-# ----------------------------------------------------
+# (현대 수집 함수)
 def fetch_hyundai_pages(driver, main_category, sub_category, faq_data_list, collected_questions):
     page_num = 1
+    wait = WebDriverWait(driver, 10)
+    
     while True:
         print(f"     ↳ [현대] {main_category} > {sub_category} - {page_num}페이지 수집 중...")
-        random_sleep(2, 3) # Ajax 데이터 교체 렌더링 대기
+        random_sleep(2, 3) 
         
-        list_items = driver.find_elements(By.CSS_SELECTOR, "div.list-item")
-        
+        try:
+            wait.until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, "div.list-item")))
+            list_items = driver.find_elements(By.CSS_SELECTOR, "div.list-item")
+        except Exception:
+            break
+            
         for i in range(len(list_items)):
             try:
-                # 매 반복마다 DOM 요소를 새로 고침하여 Stale Element 에러 원천 차단
                 curr_items = driver.find_elements(By.CSS_SELECTOR, "div.list-item")
                 if i >= len(curr_items): break
                 item = curr_items[i]
                 
-                # 1. 질문 추출
                 content_span = item.find_element(By.CSS_SELECTOR, "span.list-content")
                 question = driver.execute_script("return arguments[0].innerText;", content_span).strip()
                 if not question: continue
                 
-                # 2. 아코디언 열기
                 title_btn = item.find_element(By.CSS_SELECTOR, "button.list-title")
                 safe_click(driver, title_btn)
-                time.sleep(1.0) # 아코디언이 열리면서 DOM 구조가 바뀌는 시간
+                time.sleep(1.0) 
                 
-                # 3. 객체가 갱신되었으므로 다시 현재 항목을 잡아 답변(div.conts) 추출
                 curr_items = driver.find_elements(By.CSS_SELECTOR, "div.list-item")
                 conts_div = curr_items[i].find_element(By.CSS_SELECTOR, "div.conts")
                 
-                # JS 명령어로 화면에 보이지 않는 공백/줄바꿈 텍스트까지 모조리 긁어옴
                 answer = driver.execute_script("return arguments[0].innerText || arguments[0].textContent;", conts_div).strip()
                 
                 if answer and question not in collected_questions:
@@ -156,10 +160,9 @@ def fetch_hyundai_pages(driver, main_category, sub_category, faq_data_list, coll
                         "question": question,
                         "answer": answer
                     })
-            except Exception as e:
+            except Exception:
                 continue
                 
-        # [현대 페이징] 하단의 1, 2, 3.. 번호를 직접 추적하여 클릭
         try:
             page_buttons = driver.find_elements(By.CSS_SELECTOR, "ul.el-pager li.number")
             clicked_next = False
@@ -173,20 +176,16 @@ def fetch_hyundai_pages(driver, main_category, sub_category, faq_data_list, coll
             if clicked_next:
                 page_num += 1
             else:
-                # 다음 번호가 안 보이면 '다음(▶)' 화살표 클릭 시도
                 next_arrow = driver.find_element(By.CSS_SELECTOR, "button.btn-next")
                 class_attr = next_arrow.get_attribute("class")
-                if "ative" in class_attr: # ative 가 있으면 활성화된 버튼
+                if "ative" in class_attr: 
                     safe_click(driver, next_arrow)
                     page_num += 1
                 else:
-                    break # 마지막 페이지
+                    break 
         except Exception:
             break
 
-# ----------------------------------------------------
-# 메인 실행 함수
-# ----------------------------------------------------
 def crawl_faq():
     driver = get_driver()
     faq_data_list = []
@@ -195,7 +194,7 @@ def crawl_faq():
     try:
         wait = WebDriverWait(driver, 10)
         
-        # ================== [기아] 크롤링 ==================
+        # 기아 크롤링
         print("\n▶ 기아 FAQ 크롤링 시작...")
         driver.get("https://www.kia.com/kr/customer-service/center/faq")
         random_sleep(3, 5)
@@ -208,13 +207,13 @@ def crawl_faq():
                 tabs = driver.find_elements(By.CSS_SELECTOR, "#tab-list > li > button")
                 main_category = tabs[i].text.strip()
                 
-                print(f"\n[기아 대분류] {main_category} 진입...")
+                print(f"\n[기아 대분류] {main_category} 탭 진입...")
                 safe_click(driver, tabs[i])
                 fetch_kia_pages(driver, main_category, faq_data_list, collected_questions)
         except Exception as e:
             print(f"기아 크롤링 중 오류: {e}")
 
-        # ================== [현대] 크롤링 ==================
+        # 현대 크롤링
         print("\n▶ 현대자동차 FAQ 크롤링 시작...")
         driver.get("https://www.hyundai.com/kr/ko/e/customer/center/faq")
         random_sleep(4, 6)
@@ -231,11 +230,10 @@ def crawl_faq():
                 if not main_category or main_category == "전체":
                     continue
                     
-                print(f"\n[현대 대분류] {main_category} 진입...")
+                print(f"\n[현대 대분류] {main_category} 탭 진입...")
                 safe_click(driver, main_tabs[i])
                 random_sleep(2, 3) 
                 
-                # 중분류 탭 확인 (.tab-menu-sub 내부 버튼들)
                 sub_tabs = driver.find_elements(By.CSS_SELECTOR, ".tab-menu-sub button, .sub-tab button")
                 if len(sub_tabs) > 0:
                     sub_tabs_count = len(sub_tabs)
@@ -245,10 +243,12 @@ def crawl_faq():
                         
                         sub_category = curr_sub_tabs[j].text.strip()
                         if sub_category == "전체": 
-                            continue # 중복 데이터 방지
+                            continue 
                             
                         print(f"   [현대 중분류] {sub_category} 선택...")
                         safe_click(driver, curr_sub_tabs[j])
+                        random_sleep(2, 3) 
+                        
                         fetch_hyundai_pages(driver, main_category, sub_category, faq_data_list, collected_questions)
                 else:
                     fetch_hyundai_pages(driver, main_category, "일반", faq_data_list, collected_questions)
@@ -259,7 +259,7 @@ def crawl_faq():
     finally:
         driver.quit()
 
-    # ================== CSV 저장 및 DB 적재 ==================
+    # CSV 추출 및 DB 적재
     csv_filename = "faq_data.csv"
     print(f"\n▶ 수집된 데이터를 '{csv_filename}' 파일로 추출합니다...")
     df_faq = pd.DataFrame(faq_data_list)

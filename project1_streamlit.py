@@ -1,11 +1,17 @@
+import os
 import streamlit as st
 import pandas as pd
 import pymysql
 import plotly.express as px
+from dotenv import load_dotenv
 
-# ==========================================
-# 1. UI/UX 디자인 설정 (Custom CSS)
-# ==========================================
+# .env 로드
+load_dotenv()
+DB_HOST = os.getenv('DB_HOST')
+DB_USER = os.getenv('DB_USER')
+DB_PASSWORD = os.getenv('DB_PASSWORD')
+DB_NAME = os.getenv('DB_NAME')
+
 def apply_custom_css():
     st.markdown("""
         <style>
@@ -14,12 +20,8 @@ def apply_custom_css():
         html, body, [class*="css"] {
             font-family: 'Noto Sans KR', sans-serif !important;
         }
-        h1, h2, h3 {
-            color: #002C5F !important;
-        }
-        [data-testid="stSidebar"] {
-            background-color: #F4F6F9;
-        }
+        h1, h2, h3 { color: #002C5F !important; }
+        [data-testid="stSidebar"] { background-color: #F4F6F9; }
         .info-card {
             padding: 20px;
             background-color: white;
@@ -28,33 +30,19 @@ def apply_custom_css():
             border-top: 5px solid #007FA8;
             margin-bottom: 20px;
         }
-        .info-card h4 {
-            color: #002C5F;
-            margin-top: 0;
-            font-weight: 700;
-        }
-        .info-card p {
-            color: #555555;
-            font-size: 15px;
-            line-height: 1.6;
-        }
-        .block-container {
-            padding-top: 2rem;
-        }
+        .info-card h4 { color: #002C5F; margin-top: 0; font-weight: 700; }
+        .info-card p { color: #555555; font-size: 15px; line-height: 1.6; }
+        .block-container { padding-top: 2rem; }
         </style>
     """, unsafe_allow_html=True)
 
-
-# ==========================================
-# 2. 데이터베이스 연결 및 데이터 로드 함수
-# ==========================================
 @st.cache_resource
 def init_connection():
     return pymysql.connect(
-        host='127.0.0.1',
-        user='root',
-        password='1234', # 데이터베이스 비밀번호로 변경 필수
-        database='korea_car',
+        host=DB_HOST,
+        user=DB_USER,
+        password=DB_PASSWORD,
+        database=DB_NAME,
         cursorclass=pymysql.cursors.DictCursor
     )
 
@@ -70,10 +58,6 @@ def load_data(_conn, query_or_table):
         result = cursor.fetchall()
     return pd.DataFrame(result)
 
-
-# ==========================================
-# 3. 메인 앱 실행
-# ==========================================
 def main():
     st.set_page_config(page_title="자동차 통합 정보 포털", page_icon="🚘", layout="wide")
     apply_custom_css()
@@ -81,15 +65,11 @@ def main():
     st.sidebar.title("🧭 네비게이션")
     page = st.sidebar.radio("메뉴를 선택하세요", ["🏠 메인 개요 (Home)", "📊 자동차 등록현황 대시보드", "💬 현대/기아 FAQ 검색"])
     
-    # ------------------------------------------
-    # 페이지 1: 메인 개요 
-    # ------------------------------------------
     if page == "🏠 메인 개요 (Home)":
         st.title("대한민국 자동차 통합 정보 포털 🚘")
         st.markdown("<p style='font-size: 18px; color: #666;'>국내 자동차 등록 통계부터 주요 브랜드의 고객지원 정보까지 한 곳에서 확인하세요.</p>", unsafe_allow_html=True)
         
         st.divider()
-        
         col1, col2 = st.columns(2)
         
         with col1:
@@ -114,9 +94,6 @@ def main():
             
         st.markdown("<br><br><br><center><p style='color: #aaaaaa;'>© 2026 Korea Car Data Intelligence Dashboard. All rights reserved.</p></center>", unsafe_allow_html=True)
         
-    # ------------------------------------------
-    # 페이지 2: 통계 대시보드
-    # ------------------------------------------
     elif page == "📊 자동차 등록현황 대시보드":
         st.title("🚗 자동차 등록현황 대시보드")
         
@@ -126,7 +103,6 @@ def main():
             df_year = load_data(conn, "car_by_year_v2")
             df_region = load_data(conn, "car_by_region")
             
-            # --- 서브 메뉴판 ---
             chart_menu = st.radio(
                 "조회할 통계 항목을 선택하세요:",
                 ["연도별 차량등록", "차종별 차량등록", "지역별 교통량 비교"],
@@ -156,7 +132,7 @@ def main():
                     fig_line.update_layout(xaxis_type='category', yaxis=dict(rangemode='nonnegative'))
                     st.plotly_chart(fig_line, use_container_width=True)
 
-            # [2] 차종별 통계 (막대그래프 드릴다운)
+            # [2] 차종별 통계 
             elif chart_menu == "차종별 차량등록":
                 st.subheader("📊 차종별 상세 등록 현황 (동급 분류 비교)")
                 if 'drill_path' not in st.session_state:
@@ -193,14 +169,12 @@ def main():
                 else:
                     st.warning("이 항목에 대한 하위 데이터가 존재하지 않습니다.")
 
-            # [3] 지역별 통계 (대형 원형 그래프 + 선택형 서브 그래프)
+            # [3] 지역별 통계 
             elif chart_menu == "지역별 교통량 비교":
                 st.subheader("🗺️ 전국 시/도별 총 등록대수 비교")
                 
-                # 시/도 (Depth = 1) 필터링
                 df_sido = df_region[df_region['Depth'] == 1].copy().reset_index(drop=True)
                 
-                # 메인 원형 그래프 크기 키우기 (height=700)
                 fig_pie1 = px.pie(
                     df_sido, 
                     names='Category_Name', 
@@ -212,12 +186,8 @@ def main():
                 st.plotly_chart(fig_pie1, use_container_width=True)
                 
                 st.divider()
-                
-                # 하단 지역 선택 인터페이스
                 st.subheader("🔎 특정 지역 세부 차종 비율 조회")
                 sido_list = df_sido['Category_Name'].tolist()
-                
-                # 드롭다운으로 지역 명시적 선택
                 selected_sido = st.selectbox("상세 비율을 확인할 시/도를 선택하세요:", options=sido_list)
                 
                 if selected_sido:
@@ -241,9 +211,6 @@ def main():
         except Exception as e:
             st.error(f"오류가 발생했습니다: {e}")
 
-    # ------------------------------------------
-    # 페이지 3: FAQ 스마트 검색
-    # ------------------------------------------
     elif page == "💬 현대/기아 FAQ 검색":
         st.title("💬 기업별 FAQ 스마트 검색")
         st.write("크롤링된 데이터를 기반으로 궁금하신 카테고리의 답변을 단계별로 확인하세요.")
