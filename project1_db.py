@@ -18,7 +18,7 @@ load_dotenv()
 DB_HOST = os.getenv('DB_HOST', '127.0.0.1')
 DB_USER = os.getenv('DB_USER', 'root')
 DB_PASSWORD = os.getenv('DB_PASSWORD', 'your_password')
-DB_NAME = os.getenv('DB_NAME', 'testdb1') 
+DB_NAME = os.getenv('DB_NAME', 'korea_car') 
 
 print("======================================================")
 print(" 🚀 프로젝트 초기 세팅 시작 (DB 초기화 및 데이터 적재) ")

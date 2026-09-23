@@ -60,7 +60,7 @@ load_dotenv()
 def init_connection():
     return pymysql.connect(
         host=os.getenv('DB_HOST', '127.0.0.1'), user=os.getenv('DB_USER', 'root'), 
-        password=os.getenv('DB_PASSWORD', 'your_password'), database=os.getenv('DB_NAME', 'testdb1'), 
+        password=os.getenv('DB_PASSWORD', 'your_password'), database=os.getenv('DB_NAME', 'korea_car'), 
         cursorclass=pymysql.cursors.DictCursor
     )
 
