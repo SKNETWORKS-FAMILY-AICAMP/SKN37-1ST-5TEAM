@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="760" viewBox="0 0 1600 760" role="img" aria-labelledby="title desc">
+  <title id="title">CAR DATA INSIGHTS 데이터베이스 ERD</title>
+  <desc id="desc">자동차 등록현황 사실 테이블과 FAQ 테이블은 물리적 외래 키 없이 독립적으로 구성된다.</desc>
+  <style>
+    .bg{fill:#07090d}.card{fill:#111923;stroke:#2a3948;stroke-width:2}.head{fill:#0d3a37}.title{fill:#f5f7fa;font:700 30px Arial,sans-serif}.subtitle{fill:#9aabbc;font:18px Arial,sans-serif}.th{fill:#35d0ba;font:700 22px Arial,sans-serif}.txt{fill:#dce5ee;font:17px Arial,sans-serif}.muted{fill:#9aabbc;font:16px Arial,sans-serif}.line{stroke:#2a3948;stroke-width:1}.note{fill:#151e29;stroke:#33475a;stroke-width:1.5}.noteText{fill:#ffb86b;font:700 18px Arial,sans-serif}
+  </style>
+  <rect class="bg" width="1600" height="760" rx="24"/>
+  <text x="70" y="65" class="title">CAR DATA / INSIGHTS · ERD</text>
+  <text x="70" y="96" class="subtitle">자동차 등록 통계와 제조사 FAQ는 조회 화면은 공유하지만, 데이터 모델은 독립적으로 관리합니다.</text>
+  <rect class="card" x="70" y="145" width="700" height="520" rx="18"/>
+  <rect class="head" x="70" y="145" width="700" height="72" rx="18"/>
+  <text x="105" y="190" class="th">vehicle_registration_fact</text>
+  <text x="105" y="250" class="txt">PK  record_key          CHAR(64)</text>
+  <text x="105" y="285" class="txt">    data_type           VARCHAR(20)</text>
+  <text x="105" y="320" class="txt">    period              CHAR(7)</text>
+  <text x="105" y="355" class="txt">    sido / sigungu      VARCHAR(40/60)</text>
+  <text x="105" y="390" class="txt">    usage_type          VARCHAR(40)</text>
+  <text x="105" y="425" class="txt">    fuel                VARCHAR(80)</text>
+  <text x="105" y="460" class="txt">    gender / age_group  VARCHAR(30/40)</text>
+  <text x="105" y="495" class="txt">    size_group          VARCHAR(30)</text>
+  <text x="105" y="530" class="txt">    registration_count  BIGINT</text>
+  <text x="105" y="580" class="muted">UK  period + 지역 + 분석 분류 조합</text>
+  <text x="105" y="615" class="muted">IDX period · sido · data_type</text>
+  <rect class="card" x="900" y="205" width="630" height="400" rx="18"/>
+  <rect class="head" x="900" y="205" width="630" height="72" rx="18"/>
+  <text x="935" y="250" class="th">faq</text>
+  <text x="935" y="310" class="txt">PK  faq_key             CHAR(64)</text>
+  <text x="935" y="345" class="txt">    company             VARCHAR(50)</text>
+  <text x="935" y="380" class="txt">    category_main       VARCHAR(100)</text>
+  <text x="935" y="415" class="txt">    category_sub        VARCHAR(100)</text>
+  <text x="935" y="450" class="txt">    question            TEXT</text>
+  <text x="935" y="485" class="txt">    answer              LONGTEXT</text>
+  <text x="935" y="535" class="muted">IDX company · company/category_main/category_sub</text>
+  <rect class="note" x="823" y="385" width="170" height="80" rx="14"/>
+  <text x="850" y="419" class="noteText">물리적 FK 없음</text>
+  <text x="845" y="446" class="muted">독립 분석 데이터</text>
+</svg>
