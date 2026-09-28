@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>CAR DATA · 자동차 등록현황</title>
+  <style>
+    :root{--bg:#07090d;--side:#0d1118;--card:#111923;--line:#2a3747;--text:#f5f7fa;--muted:#9aa8b8;--mint:#35d0ba;--orange:#ffb86b;--pink:#ff7aa2;--purple:#c792ea}
+    *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--text);font-family:"Noto Sans KR",Arial,sans-serif}.app{min-height:100vh}.sidebar{width:270px;position:fixed;inset:0 auto 0 0;background:var(--side);border-right:1px solid var(--line);padding:22px 18px;transition:transform .2s}.sidebar.hidden{transform:translateX(-100%)}.main{margin-left:270px;padding:30px 45px;width:calc(100% - 270px);transition:margin-left .2s,width .2s}.main.wide{margin-left:0;width:100%}.nav-toggle{position:fixed;left:18px;bottom:20px;border:1px solid var(--line);border-radius:9px;background:#16212c;color:var(--text);padding:9px 11px;cursor:pointer;z-index:2}.sidebar.hidden+.main .nav-toggle{left:18px}.kicker{font-size:11px;letter-spacing:.18em;color:var(--mint);font-weight:800}.brand{font-size:25px;font-weight:800;margin:5px 0 28px}.side-btn{display:block;width:100%;padding:13px 15px;margin:7px 0;background:#151e29;border:1px solid var(--line);border-radius:12px;color:var(--text);font-weight:700;text-align:left;cursor:pointer}.side-btn.active{border-color:var(--mint);color:var(--mint)}.expander{display:none;padding:5px 0 8px 10px}.expander.open{display:block}.sub-btn{display:block;width:100%;padding:9px 10px;background:transparent;border:0;border-radius:8px;color:var(--muted);text-align:left;cursor:pointer}.sub-btn:hover,.sub-btn.active{background:#182b31;color:var(--mint)}.view,.pane{display:none}.view.active,.pane.active{display:block}.hero{padding:27px;border:1px solid var(--line);border-radius:20px;background:linear-gradient(135deg,#111b27,#0b1017);margin-bottom:20px}.hero h1{font-size:36px;margin:8px 0}.muted{color:var(--muted)}.home-cards{display:grid;grid-template-columns:1fr 1fr;gap:18px}.home-card{min-height:260px;text-align:left;padding:28px;border:1px solid var(--line);border-radius:18px;background:var(--card);color:var(--text);cursor:pointer}.home-card:hover{border-color:var(--mint);transform:translateY(-2px)}.home-card h2{font-size:28px;margin:12px 0}.home-card p{color:var(--muted);line-height:1.7}.home-card .go{color:var(--mint);font-weight:700}.tabs{display:flex;border-bottom:1px solid #344454;margin:20px 0 17px}.tab{padding:12px 19px;background:transparent;border:0;border-right:1px solid #344454;color:#aab7c5;cursor:pointer;font-weight:700}.tab.active{color:var(--mint);border-bottom:3px solid var(--mint)}.controls{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin:13px 0}.controls label{display:inline-flex;align-items:center;gap:6px;color:var(--muted);font-size:13px}.controls select{width:108px;min-width:108px;background:#111923;border:1px solid var(--line);border-radius:9px;padding:9px;color:var(--text)}.controls select.sigu{width:130px;min-width:130px}.layout{display:grid;grid-template-columns:1fr 1fr;gap:15px}.panel{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:17px}.panel h3{margin:0 0 12px}.bar{display:flex;align-items:center;gap:10px;margin:12px 0}.bar label{width:110px;color:var(--muted);font-size:13px}.track{height:14px;background:#202c38;flex:1;border-radius:15px}.fill{height:100%;border-radius:15px}.value{width:100px;text-align:right;font-size:13px}.chart-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:15px;margin-top:15px}.donut-box{display:flex;align-items:center;justify-content:center;min-height:230px}.donut-legend{font-size:13px;color:var(--muted);line-height:1.9}.legend-dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px}.map-wrap{position:relative;height:420px;display:flex;align-items:center;justify-content:center;overflow:hidden;border-radius:12px;background:#15202a}.map-wrap img{max-height:100%;max-width:100%;object-fit:contain;filter:brightness(.8) contrast(1.05)}.map-dot{position:absolute;width:15px;height:15px;border:2px solid white;border-radius:50%;background:var(--mint);transform:translate(-50%,-50%);cursor:pointer}.map-dot.selected{box-shadow:0 0 0 5px rgba(53,208,186,.28);background:var(--orange)}.map-tip{font-size:12px;color:var(--muted);margin:8px 0 0}table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);margin-top:15px}th,td{padding:10px;border-bottom:1px solid #24313e;text-align:left}th{color:var(--mint);font-size:13px}td{font-size:13px}.download-row{display:flex;justify-content:flex-end;margin-top:10px}.download{background:#17242d;border:1px solid var(--mint);border-radius:8px;color:var(--mint);padding:9px 12px;cursor:pointer}.faq{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:17px}.status{font-size:12px;color:var(--muted);margin-top:8px}@media(max-width:850px){.sidebar{width:210px}.main{margin-left:210px;width:calc(100% - 210px);padding:22px}.layout,.chart-grid,.home-cards,.faq{grid-template-columns:1fr}.map-wrap{height:340px}}
+    .home-intro{padding:12px 0 28px}.home-intro h1{font-size:42px;margin:0 0 12px}.car-intro{padding:12px 0 20px}.car-intro h1{font-size:36px;margin:8px 0}.date-picker{display:flex;flex-direction:column;background:#111923;border:1px solid var(--line);border-radius:10px;overflow:hidden}.date-section{padding:9px 12px}.date-section+.date-section{border-top:1px solid var(--line)}.date-label{display:block;color:var(--muted);font-size:13px;margin-bottom:7px}.date-options{display:flex;flex-direction:column;gap:7px}.date-option-row{display:flex;gap:6px;flex-wrap:wrap}.date-options label{display:inline-flex;align-items:center;gap:3px;color:var(--text);font-size:12px;cursor:pointer}.criteria{margin:6px 0 16px;color:var(--muted)}.criteria strong{color:var(--text);margin-left:8px}.comparison-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:15px}.comparison-total{display:block;font-size:26px;margin:4px 0 12px}.dual-donut{display:grid;grid-template-columns:repeat(2,1fr);gap:15px;text-align:center}.dual-donut svg{width:180px;max-width:100%}.shared-legend{display:flex;flex-wrap:wrap;gap:8px 16px;margin-top:12px;color:var(--muted);font-size:13px}.data-table-card{margin-top:15px}.table-scroll{max-height:430px;overflow-y:auto}.table-scroll table{margin-top:0}.num{text-align:right}.nav-toggle{position:absolute;top:16px;right:14px;left:auto;bottom:auto;border:0;background:transparent;color:var(--muted);font-size:21px;cursor:pointer}.nav-restore{display:none;position:fixed;top:16px;left:16px;border:1px solid var(--line);border-radius:8px;background:var(--side);color:var(--muted);padding:6px 9px;cursor:pointer;z-index:3}.nav-restore.show{display:block}
+  /* FAQ는 한 카드씩 세로로 표시한다. */
+  .faq{grid-template-columns:1fr}
+  /* 통합 화면 구성비: 원형 그래프 위, 범례는 아래 중앙 정렬 */
+  #allPane .donut-box{flex-direction:column;gap:8px}
+  #allPane .donut-legend{display:flex;flex-wrap:wrap;justify-content:center;gap:4px 14px;text-align:center}
+  #allPane .donut-legend div{white-space:nowrap}
+  #allPane .integrated-percent{font-family:inherit;font-size:10px;font-weight:500;fill:#d7e0e9;paint-order:stroke;stroke:#101923;stroke-width:2px;stroke-linejoin:round}
+  #allPane .integrated-period{font-family:inherit;font-size:12px;font-weight:600;fill:#f5f7fa}
+  #allPane .shared-legend{justify-content:center;text-align:center}
+  .controls .date-picker{flex:0 0 100%}
+  .date-section{display:flex;align-items:flex-start;gap:8px}
+  .date-label{flex:0 0 28px;margin:3px 0 0}
+  .date-options{flex:1;min-width:0}
+  #allPane .integrated-percent{fill:var(--muted);font-weight:400}
+  #regionPane .integrated-percent{font-family:inherit;font-size:10px;font-weight:400;fill:var(--muted);paint-order:stroke;stroke:#101923;stroke-width:2px;stroke-linejoin:round}
+  #regionPane .integrated-period{font-family:inherit;font-size:12px;font-weight:600;fill:#f5f7fa}
+  .integrated-percent{font-family:inherit;font-size:10px;font-weight:400;fill:var(--muted);paint-order:stroke;stroke:#101923;stroke-width:2px;stroke-linejoin:round}
+  .integrated-period{font-family:inherit;font-size:12px;font-weight:600;fill:#f5f7fa}
+  #regionPane .region-shared-legend{justify-content:center;text-align:center}
+  .controls select:disabled{opacity:.55;cursor:not-allowed}
+  .region-layout{display:grid;grid-template-columns:316px minmax(300px,1fr);gap:15px;align-items:start}
+  .region-map-card{width:316px}
+  .region-map-wrap{position:relative;width:280px;height:420px;margin:0 auto;overflow:hidden}
+  .region-map-wrap img{display:block;width:280px;height:420px;max-width:none;max-height:none;object-fit:contain}
+  .region-comparison-stack{display:grid;grid-template-columns:1fr;gap:15px;min-width:0}
+  .region-comparison-stack .panel{margin:0!important}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar" id="sidebar">
+    <button class="nav-toggle" id="navToggle" aria-label="사이드바 숨기기">&lt;&lt;</button><div class="kicker">CAR DATA</div><div class="brand">INSIGHTS</div>
+    <button class="side-btn active" id="carBtn" onclick="carTab('all')">자동차 등록 현황</button>
+    <div class="expander open" id="carExp">
+      <button class="sub-btn" data-open="region" onclick="carTab('region')">지역별 현황</button><button class="sub-btn" data-open="usage" onclick="carTab('usage')">용도별 현황</button><button class="sub-btn" data-open="fuel" onclick="carTab('fuel')">연료별 현황</button><button class="sub-btn" data-open="gender" onclick="carTab('gender')">성별 현황</button>
+    </div>
+    <button class="side-btn" id="faqBtn" onclick="show('faqView');faqRender('all')">FAQ</button>
+    <div class="expander" id="faqExp"><button class="sub-btn" data-faq="hyundai" onclick="show('faqView');faqRender('hyundai')">현대</button><button class="sub-btn" data-faq="kia" onclick="show('faqView');faqRender('kia')">기아</button><button class="sub-btn" data-faq="chevrolet" onclick="show('faqView');faqRender('chevrolet')">쉐보레</button></div>
+  </aside>
+  <main class="main" id="main">
+    <button class="nav-restore" id="navRestore" aria-label="사이드바 표시">&gt;&gt;</button>
+    <section id="home" class="view active">
+      <div class="home-intro"><h1>INSIGHTS <span class="kicker" style="vertical-align:middle">CAR DATA</span></h1><p class="muted">자동차 등록 통계를 원하는 기준으로 살펴보고, FAQ에서 자주 묻는 등록 관련 질문도 확인할 수 있습니다.</p></div>
+      <div class="home-cards">
+        <button class="home-card" id="homeCar" onclick="carTab('all')"><div class="kicker">REGISTRATION DASHBOARD</div><h2>자동차 등록현황</h2><p>지역·시군구와 용도·연료·성별·연령대를 선택해 실제 등록자료를 확인합니다.</p></button>
+        <button class="home-card" id="homeFaq" onclick="show('faqView');faqRender('all')"><div class="kicker">CUSTOMER SUPPORT</div><h2>FAQ</h2><p>자주 확인하는 질문을 모아둔 화면입니다.</p></button>
+      </div>
+      <div class="status" id="dataStatus" style="display:none"></div>
+    </section>
+    <section id="carView" class="view">
+      <div class="car-intro"><div class="kicker">REGISTRATION DASHBOARD</div><h1>자동차 등록 현황</h1></div>
+      <div id="sharedControls"></div>
+      <div class="tabs"><button class="tab active" data-tab="all">통합</button><button class="tab" data-tab="region">지역별</button><button class="tab" data-tab="usage">용도별</button><button class="tab" data-tab="fuel">연료별</button><button class="tab" data-tab="gender">성별</button></div>
+      <div class="pane active" id="allPane"></div><div class="pane" id="regionPane"></div><div class="pane" id="usagePane"></div><div class="pane" id="fuelPane"></div><div class="pane" id="genderPane"></div>
+    </section>
+    <section id="faqView" class="view">
+      <div class="hero"><div class="kicker">CUSTOMER SUPPORT</div><h1>FAQ</h1><p class="muted">사이드바와 본문 탭에서 같은 FAQ 화면으로 이동합니다.</p></div>
+      <div class="tabs"><button class="tab active" data-faq-tab="all">통합</button><button class="tab" data-faq-tab="hyundai">현대</button><button class="tab" data-faq-tab="kia">기아</button><button class="tab" data-faq-tab="chevrolet">쉐보레</button></div><div id="faqControls" class="controls"></div><div id="faqBody" class="faq"></div>
+    </section>
+  </main>
+</div>
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)],num=v=>Number(String(v).replace(/,/g,""))||0,fmt=v=>num(v).toLocaleString("ko-KR")+"대";
+let rows=[];
+let sigunguAliases={};
+const state={all:{years:[],months:[],sido:"전체",sigungu:"전체"},region:{years:[],months:[],sido:"전체",sigungu:"전체"},usage:{years:[],months:[],sido:"전체",usage:"전체"},fuel:{years:[],months:[],sido:"전체",fuel:"전체"},gender:{years:[],months:[],sido:"전체",gender:"전체",age:"전체"}};
+const sharedFilters={years:[],months:[],sido:"전체"};
+function normalizeAgeLabel(value){const raw=String(value||"전체").trim(),compact=raw.replace(/\s+/g,"");if(compact==="10대이하")return"10대 이하";if(compact==="90대이상")return"90대 이상";if(compact==="합")return"계";return raw}
+function parseCSV(text){const lines=text.trim().split(/\r?\n/),head=lines.shift().split(",");return lines.map(line=>{const cols=line.split(","),o={};head.forEach((h,i)=>o[h]=cols[i]||"전체");return{period:o["기준년월"].slice(0,7),sido:o["시도"],sigungu:o["시군구"],usage:o["용도"],fuel:o["연료"],gender:o["성별"],age:normalizeAgeLabel(o["연령대"]),size:o["규모"],count:num(o["등록대수"])};});}
+const isOverall=r=>r.sigungu==="전체"&&r.usage==="전체"&&r.fuel==="전체"&&r.gender==="전체"&&r.age==="전체"&&r.size==="전체";
+const isRegion=r=>r.usage==="전체"&&r.fuel==="전체"&&r.gender==="전체"&&r.age==="전체"&&r.size==="전체";
+const isUsage=r=>r.sigungu==="전체"&&r.fuel==="전체"&&r.gender==="전체"&&r.age==="전체"&&r.size==="전체";
+const isFuel=r=>r.sigungu==="전체"&&r.usage==="전체"&&r.gender==="전체"&&r.age==="전체"&&r.size==="전체";
+const isGender=r=>r.sigungu==="전체"&&r.usage==="전체"&&r.fuel==="전체"&&r.size==="전체";
+function sigunguAliasKey(name){return String(name).trim().replace(/시(?=\s)/g,"").replace(/[시군구]$/g,"").replace(/\s+/g,"")}
+function sigunguAdminMarkerCount(name){return(String(name).match(/시(?=\s|$)|[군구]$/g)||[]).length}
+function buildSigunguAliases(data){const labelsBySido=new Map();data.forEach(row=>{if(isRegion(row)&&row.sigungu!=="전체"){if(!labelsBySido.has(row.sido))labelsBySido.set(row.sido,new Set());labelsBySido.get(row.sido).add(row.sigungu)}});const aliases={};labelsBySido.forEach((labels,sido)=>{const groups=new Map();labels.forEach(name=>{const key=sigunguAliasKey(name);if(!groups.has(key))groups.set(key,[]);groups.get(key).push(name)});groups.forEach(names=>{if(names.length<2)return;const canonical=[...names].sort((a,b)=>sigunguAdminMarkerCount(a)-sigunguAdminMarkerCount(b)||a.length-b.length||a.localeCompare(b,"ko"))[0];names.forEach(name=>{if(name!==canonical)aliases[sido+"|"+name]=canonical})})});return aliases}
+function canonicalSigungu(sido,name){return sigunguAliases[sido+"|"+name]||name}
+function normalizeRegionRows(data){const byKey=new Map();data.forEach(row=>{const name=canonicalSigungu(row.sido,row.sigungu);const key=[row.period,row.sido,name].join("|");const current=byKey.get(key);if(!current||row.sigungu===name&&current.sourceName!==name)byKey.set(key,{row:{...row,sigungu:name},sourceName:row.sigungu})});return[...byKey.values()].map(item=>item.row)}
+const unique=a=>[...new Set(a)].filter(v=>v&&v!=="전체").sort();
+function optionList(values,current){return["전체",...unique(values)].map(v=>`<option value="${v}" ${v===current?"selected":""}>${v}</option>`).join("")}
+function field(id,label,values,value,cls="",key="",disabled=false){return`<label>${label}<select id="${id}" class="${cls}" data-key="${key}" ${disabled?"disabled":""}>${optionList(values,value)}</select></label>`}
+function fixedField(id,label,value){return`<label>${label}<select id="${id}" disabled><option selected>${value}</option></select></label>`}
+function datePicker(mode){const years=unique(rows.map(r=>r.period.slice(0,4))),months=Array.from({length:12},(_,index)=>String(index+1).padStart(2,"0")),check=(value,chosen,key)=>`<label><input type="checkbox" value="${value}" data-date-key="${key}" ${chosen.includes(value)?"checked":""}>${value}</label>`,section=(label,values,chosen,key)=>`<div class="date-section"><span class="date-label">${label}</span><div class="date-options"><div class="date-option-row">${check("전체",chosen,key)}</div><div class="date-option-row">${values.map(v=>check(v,chosen,key)).join("")}</div></div></div>`,sidos=["전체",...unique(rows.map(r=>r.sido).filter(v=>v!=="계"))],sidoSection=`<div class="date-section"><span class="date-label">시도</span><div class="date-options"><div class="date-option-row">${sidos.map(v=>`<label><input type="radio" name="shared-sido-radio" value="${v}" ${sharedFilters.sido===v?"checked":""}>${v}</label>`).join("")}</div></div></div>`;return`<div class="date-picker">${section("년",years,sharedFilters.years,"year")}${section("월",months,sharedFilters.months,"month")}${sidoSection}</div>`}
+function monthLimit(){const years=sharedFilters.years.filter(value=>value!=="전체");return years.length===2?1:2}
+function updateDate(mode,key,value,checked){const prop=key==="year"?"years":"months";let values=[...sharedFilters[prop]];if(value==="전체"){values=checked?["전체"]:[]}else{values=values.filter(v=>v!=="전체");if(checked){const limit=key==="year"?2:monthLimit();if(values.length<limit)values.push(value)}else values=values.filter(v=>v!==value)}sharedFilters[prop]=values;if(key==="year"&&sharedFilters.months.length>monthLimit())sharedFilters.months=sharedFilters.months.includes("전체")?["전체"]:[sharedFilters.months[0]];syncCarFilters(mode)}
+function syncCarFilters(sourceMode,sidoChanged=false){["all","region","usage","fuel","gender"].forEach(mode=>{state[mode].years=[...sharedFilters.years];state[mode].months=[...sharedFilters.months];state[mode].sido=sharedFilters.sido;if(sidoChanged&&mode==="region")state[mode].sigungu="전체"})}
+function sourceFor(mode){if(mode==="all")return rows.filter(isOverall);if(mode==="region")return rows.filter(isRegion);if(mode==="usage")return rows.filter(isUsage);if(mode==="fuel")return rows.filter(isFuel);return rows.filter(isGender)}
+function controls(mode){const s={...state[mode],...sharedFilters},src=sourceFor(mode),parts=[];
+  if(mode==="region"){const siguSource=rows.filter(isRegion),sigus=s.sido==="전체"?[]:unique(siguSource.filter(r=>r.sido===s.sido&&r.sigungu!=="전체").map(r=>canonicalSigungu(r.sido,r.sigungu)));parts.push(field(`${mode}-sigungu`,`시군구`,sigus,s.sigungu,"sigu","sigungu",s.sido==="전체"));}
+  if(mode==="usage")parts.push(field("usage-choice","용도",src.map(r=>r.usage),s.usage,"","usage")); if(mode==="fuel")parts.push(field("fuel-choice","연료",src.map(r=>r.fuel),s.fuel,"","fuel")); if(mode==="gender"){parts.push(field("gender-choice","성별",src.map(r=>r.gender),s.gender,"","gender"));const ageRows=s.gender==="전체"?src:src.filter(r=>r.gender===s.gender),ages=ageRows.map(r=>r.age).filter(age=>s.gender==="기타"?age==="법인 및 사업자":age!=="법인 및 사업자");parts.push(s.gender==="기타"?fixedField("gender-age","연령대","법인 및 사업자"):field("gender-age","연령대",ages,s.age,"","age"));}
+  return parts.length?`<div class="controls">${parts.join("")}</div>`:"";
+}
+function currentCarRender(){return({all:renderAll,region:renderRegion,usage:renderUsage,fuel:renderFuel,gender:renderGender})[activeCarTab]}
+function renderSharedControls(){$("#sharedControls").innerHTML=`<div class="controls">${datePicker("shared")}</div>`;$$("#sharedControls input[name=shared-sido-radio]").forEach(el=>el.addEventListener("change",e=>{sharedFilters.sido=e.target.value;syncCarFilters("shared",true);renderSharedControls();currentCarRender()?.()}));$$("#sharedControls input[type=checkbox]").forEach(el=>el.addEventListener("change",e=>{updateDate("shared",e.target.dataset.dateKey,e.target.value,e.target.checked);renderSharedControls();currentCarRender()?.()}))}
+function filterRows(mode){const s={...state[mode],...sharedFilters},yearAll=s.years.length===0||s.years.includes("전체"),monthAll=s.months.length===0||s.months.includes("전체");return sourceFor(mode).filter(r=>(yearAll||s.years.includes(r.period.slice(0,4)))&&(monthAll||s.months.includes(r.period.slice(5,7)))&&(s.sido==="전체"?r.sido!=="계":r.sido===s.sido)&&(s.sigungu===undefined||s.sigungu==="전체"||(mode==="region"?canonicalSigungu(r.sido,r.sigungu):r.sigungu)===s.sigungu)&&(s.usage===undefined||s.usage==="전체"||r.usage===s.usage)&&(s.fuel===undefined||s.fuel==="전체"||r.fuel===s.fuel)&&(s.gender===undefined||s.gender==="전체"||r.gender===s.gender)&&(s.age===undefined||s.age==="전체"||r.age===s.age));}
+function group(data,key){const m={};data.forEach(r=>m[r[key]]=(m[r[key]]||0)+r.count);return Object.entries(m).map(([name,value])=>({name,value})).sort((a,b)=>b.value-a.value)}
+function bars(items,color="var(--mint)",limit=12){if(!items.length)return"<p class='muted'>자료가 없습니다.</p>";const max=Math.max(...items.map(x=>x.value),1);return items.slice(0,limit).map(x=>`<div class="bar"><label>${x.name}</label><div class="track"><div class="fill" style="width:${x.value/max*100}%;background:${color}"></div></div><div class="value">${fmt(x.value)}</div></div>`).join("")}
+function integratedDonutSvg(items,centerText,colors){
+  const total=items.reduce((sum,item)=>sum+item.value,0)||1;
+  let offset=0;
+  const segments=items.map((item,index)=>{
+    const percent=item.value/total*100;
+    const middle=(offset+percent/2)/100*360-90;
+    const radians=middle*Math.PI/180;
+    const x=(80+54*Math.cos(radians)).toFixed(1);
+    const y=(80+54*Math.sin(radians)+3).toFixed(1);
+    const circle='<circle cx="80" cy="80" r="54" fill="none" stroke="'+colors[index]+'" stroke-width="22" pathLength="100" stroke-dasharray="'+percent+' '+(100-percent)+'" stroke-dashoffset="'+(-offset)+'" transform="rotate(-90 80 80)"/>';
+    const label='<text class="integrated-percent" x="'+x+'" y="'+y+'" text-anchor="middle">'+Math.round(percent)+'%</text>';
+    offset+=percent;
+    return circle+label;
+  }).join("");
+  return '<svg viewBox="0 0 160 160" width="190" role="img" aria-label="'+centerText+' 구성비"><circle cx="80" cy="80" r="54" fill="none" stroke="#202c38" stroke-width="22"/>'+segments+'<text class="integrated-period" x="80" y="84" text-anchor="middle">'+centerText+'</text></svg>';
+}
+function donut(items,integrated=false,centerText=""){
+  const colors=["#35d0ba","#ffb86b","#c792ea","#ff7aa2","#70b7ff"];
+  if(integrated){
+    const top=items.slice(0,4);
+    const other=items.slice(4).reduce((sum,item)=>sum+item.value,0);
+    if(other>0)top.push({name:"기타",value:other});
+    const legend=top.map((item,index)=>'<div><span class="legend-dot" style="background:'+colors[index]+'"></span>'+item.name+'</div>').join("");
+    return '<div class="donut-box">'+integratedDonutSvg(top,centerText||"전체",colors)+'<div class="donut-legend">'+legend+'</div></div>';
+  }
+  const top=items.slice(0,4);
+  const other=items.slice(4).reduce((sum,item)=>sum+item.value,0);
+  if(other>0)top.push({name:"기타",value:other});
+  const total=top.reduce((sum,item)=>sum+item.value,0)||1;
+  let offset=0;
+  const segments=top.map((item,index)=>{
+    const percent=item.value/total*100;
+    const circle='<circle cx="80" cy="80" r="54" fill="none" stroke="'+colors[index]+'" stroke-width="22" pathLength="100" stroke-dasharray="'+percent+' '+(100-percent)+'" stroke-dashoffset="'+(-offset)+'" transform="rotate(-90 80 80)"/>';
+    offset+=percent;
+    return circle;
+  }).join("");
+  const legend=top.map((item,index)=>'<div><span class="legend-dot" style="background:'+colors[index]+'"></span>'+item.name+' '+Math.round(item.value/total*100)+'%</div>').join("");
+  return '<div class="donut-box"><svg viewBox="0 0 160 160" width="190" aria-label="구성비 원형 그래프"><circle cx="80" cy="80" r="54" fill="none" stroke="#202c38" stroke-width="22"/>'+segments+'<text x="80" y="76" text-anchor="middle" fill="#f5f7fa" font-size="13">등록대수</text><text x="80" y="96" text-anchor="middle" fill="#f5f7fa" font-size="15">'+(total/10000).toFixed(0)+'만</text></svg><div class="donut-legend">'+legend+'</div></div>';
+}
+function table(data,columns){const labels={period:"기준년월",sido:"시도",sigungu:"시군구",usage:"용도",fuel:"연료",gender:"성별",age:"연령대",count:"등록대수"};return`<div class="table-scroll"><table><thead><tr>${columns.map(k=>`<th class="${k==="count"?"num":""}">${labels[k]}</th>`).join("")}</tr></thead><tbody>${data.slice(0,10).map(r=>`<tr>${columns.map(k=>`<td class="${k==="count"?"num":""}">${k==="count"?fmt(r[k]):r[k]}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`}
+function download(data,columns,name){const labels={period:"기준년월",sido:"시도",sigungu:"시군구",usage:"용도",fuel:"연료",gender:"성별",age:"연령대",count:"등록대수"};const csv=[columns.map(k=>labels[k]).join(","),...data.map(r=>columns.map(k=>`"${String(r[k]).replaceAll('"','""')}"`).join(","))].join("\n"),a=document.createElement("a");a.href=URL.createObjectURL(new Blob(["\ufeff"+csv],{type:"text/csv;charset=utf-8"}));a.download=`자동차_등록현황_${name}.csv`;a.click();URL.revokeObjectURL(a.href)}
+function tableArea(mode,data,columns){return`<div id="${mode}-table" class="panel data-table-card"><h3>데이터 표</h3>${table(data,columns)}<div class="download-row"><button class="download" id="${mode}-download">결과 데이터 다운로드</button></div></div>`}
+function bind(mode,render,data,columns){$$("#"+mode+"Pane select:not(:disabled)").forEach(el=>el.addEventListener("change",e=>{const key=e.target.dataset.key;if(key==="sido"){sharedFilters.sido=e.target.value;syncCarFilters(mode,true)}else{state[mode][key]=e.target.value;if(mode==="gender"&&key==="gender")state.gender.age=e.target.value==="기타"?"법인 및 사업자":state.gender.age==="법인 및 사업자"?"전체":state.gender.age}render()}));$$("#"+mode+"Pane input[type=checkbox]").forEach(el=>el.addEventListener("change",e=>{updateDate(mode,e.target.dataset.dateKey,e.target.value,e.target.checked);render()}));$("#"+mode+"-download")?.addEventListener("click",()=>download(data(),columns,mode))}
+function allSiguRows(){const s=sharedFilters,yearAll=s.years.length===0||s.years.includes("전체"),monthAll=s.months.length===0||s.months.includes("전체");return rows.filter(isRegion).filter(r=>(yearAll||s.years.includes(r.period.slice(0,4)))&&(monthAll||s.months.includes(r.period.slice(5,7)))&&(s.sido==="전체"||r.sido===s.sido)&&r.sigungu!=="전체")}
+function allComparison(data){
+  const s=sharedFilters;
+  const years=s.years.filter(value=>value!=="전체");
+  const months=s.months.filter(value=>value!=="전체");
+  let key="",values=[];
+  if(years.length===2){key="year";values=years}
+  else if(months.length===2){key="month";values=months}
+  else{return ""}
+  const label=value=>key==="year"?(value+(months.length===1?"-"+months[0]:"년")):((years.length===1?years[0]+"-":"")+value);
+  const selectPeriod=(source,value)=>source.filter(row=>key==="year"?row.period.slice(0,4)===value:row.period.slice(5,7)===value);
+  const area=s.sido==="전체"?"전국":s.sido;
+  const groupKey=s.sido==="전체"?"sido":"sigungu";
+  const periodRows=values.map(value=>selectPeriod(data,value));
+  const siguRows=allSiguRows();
+  const compositionRows=values.map(value=>selectPeriod(siguRows,value));
+  const totals={};
+  compositionRows.forEach(source=>group(source,groupKey).forEach(item=>{totals[item.name]=(totals[item.name]||0)+item.value}));
+  const names=Object.entries(totals).sort((a,b)=>b[1]-a[1]).slice(0,4).map(item=>item[0]);
+  if(Object.keys(totals).length>names.length)names.push("기타");
+  const colors=["#35d0ba","#ffb86b","#c792ea","#ff7aa2","#70b7ff"];
+  const normalize=source=>{
+    const valuesByName=Object.fromEntries(group(source,groupKey).map(item=>[item.name,item.value]));
+    return names.map(name=>({
+      name,
+      value:name==="기타"
+        ?Object.entries(valuesByName).filter(item=>!names.includes(item[0])).reduce((sum,item)=>sum+item[1],0)
+        :(valuesByName[name]||0)
+    }));
+  };
+  const barsData=[];
+  values.forEach((value,index)=>{
+    if(s.sido==="전체"){
+      barsData.push({
+        name:"전체 ("+label(value)+")",
+        value:periodRows[index].reduce((sum,row)=>sum+row.count,0)
+      });
+    }else{
+      group(periodRows[index],"sido").forEach(item=>barsData.push({
+        name:item.name+" ("+label(value)+")",
+        value:item.value
+      }));
+    }
+  });
+  const comparison=values.map((value,index)=>
+    '<div><h3>'+label(value)+'</h3><strong class="comparison-total">'+
+    fmt(periodRows[index].reduce((sum,row)=>sum+row.count,0))+
+    '</strong></div>'
+  ).join("");
+  const donuts=values.map((value,index)=>
+    '<div>'+ 
+    integratedDonutSvg(normalize(compositionRows[index]),label(value),colors)+
+    '</div>'
+  ).join("");
+  const legend=names.map((name,index)=>
+    '<span><i class="legend-dot" style="background:'+colors[index]+'"></i>'+name+'</span>'
+  ).join("");
+  return '<div class="panel"><h3>등록대수</h3>'+bars(barsData,"var(--mint)")+
+    '</div><div class="panel" style="margin-top:15px"><h3>'+area+
+    ' 등록대수 비교</h3><div class="comparison-grid">'+comparison+
+    '</div></div><div class="panel" style="margin-top:15px"><h3>'+area+' '+
+    (groupKey==="sigungu"?"시군구 ":"시도 ")+'구성비</h3><div class="dual-donut">'+
+    donuts+'</div><div class="shared-legend">'+legend+'</div></div>';
+}
+function renderAll(){const d=filterRows("all"),g=group(d,"sido"),s=sharedFilters,yearText=s.years.length===0||s.years.includes("전체")?"전체":s.years.join(", "),monthText=s.months.length===0||s.months.includes("전체")?"전체":s.months.map(m=>m+"월").join(", "),periodText=yearText==="전체"&&monthText==="전체"?"전체":`${yearText}년 / ${monthText}`,ratioData=s.sido==="전체"?g:group(allSiguRows(),"sigungu"),ratioTitle=s.sido==="전체"?"구성비":`${s.sido} 시군구 구성비`,comparison=allComparison(d),cols=["period","sido","sigungu","count"];$("#allPane").innerHTML=controls("all")+`<div class="criteria"><span>기준년월</span><strong>${periodText}</strong></div>${comparison||`<div class="panel"><h3>등록대수</h3>${bars(s.sido==="전체"?[{name:"전체",value:d.reduce((sum,row)=>sum+row.count,0)}]:g)}</div><div class="panel" style="margin-top:15px"><h3>${ratioTitle}</h3>${donut(ratioData,true,periodText)}</div>`}${tableArea("all",d,cols)}`;bind("all",renderAll,()=>filterRows("all"),cols)}
+const mapPoints={서울:[30,21],부산:[71,64],대구:[60,51],인천:[23,23],광주:[33,66],대전:[46,43],울산:[70,57],경기:[37,26],강원:[62,24],충북:[51,39],충남:[34,41],전북:[38,54],전남:[28,72],경북:[64,42],경남:[54,63],세종:[42,40],제주:[23,95]};
+function mapHtml(selected){return`<div class="region-map-wrap"><img src="south-korea-map.png" alt="대한민국 행정구역 지도">${Object.entries(mapPoints).map(([name,p])=>`<button class="map-dot ${selected===name?"selected":""}" data-map-sido="${name}" style="left:${p[0]}%;top:${p[1]}%" aria-label="${name} 선택"></button>`).join("")}</div><p class="map-tip">지도 위 점을 클릭하면 시도가 선택되고 시군구 목록과 표가 함께 갱신됩니다. 지도: Wikimedia Commons 공개 도메인 자료.</p>`}
+function regionComparison(data){
+  const s={...state.region,...sharedFilters};
+  const years=s.years.filter(value=>value!=="전체");
+  const months=s.months.filter(value=>value!=="전체");
+  let key="",values=[];
+  if(years.length===2){key="year";values=years}
+  else if(months.length===2){key="month";values=months}
+  else{return ""}
+  const label=value=>key==="year"?(value+(months.length===1?"-"+months[0]:"년")):((years.length===1?years[0]+"-":"")+value);
+  const selectPeriod=(source,value)=>source.filter(row=>key==="year"?row.period.slice(0,4)===value:row.period.slice(5,7)===value);
+  const area=s.sigungu&&s.sigungu!=="전체"?s.sigungu:s.sido==="전체"?"전국":s.sido;
+  const periodRows=values.map(value=>selectPeriod(data,value));
+  const totals=periodRows.map(source=>{
+    const totalRows=source.filter(row=>row.sigungu==="전체");
+    return totalRows.length?totalRows:source;
+  });
+  const compositionRows=periodRows.map((source,index)=>{
+    if(s.sido==="전체")return totals[index];
+    const districtRows=source.filter(row=>row.sigungu!=="전체");
+    return districtRows.length?districtRows:totals[index];
+  });
+  const groupKey=s.sido==="전체"?"sido":"sigungu";
+  const combined={};
+  compositionRows.forEach(source=>group(source,groupKey).forEach(item=>{combined[item.name]=(combined[item.name]||0)+item.value}));
+  const names=Object.entries(combined).sort((a,b)=>b[1]-a[1]).slice(0,4).map(item=>item[0]);
+  if(Object.keys(combined).length>names.length)names.push("기타");
+  const colors=["#35d0ba","#ffb86b","#c792ea","#ff7aa2","#70b7ff"];
+  const normalize=source=>{
+    const valuesByName=Object.fromEntries(group(source,groupKey).map(item=>[item.name,item.value]));
+    return names.map(name=>({
+      name,
+      value:name==="기타"
+        ?Object.entries(valuesByName).filter(item=>!names.includes(item[0])).reduce((sum,item)=>sum+item[1],0)
+        :(valuesByName[name]||0)
+    }));
+  };
+  const barRows=values.map((value,index)=>({
+    name:area+" ("+label(value)+")",
+    value:totals[index].reduce((sum,row)=>sum+row.count,0)
+  }));
+  const totalCards=values.map((value,index)=>
+    '<div><h3>'+label(value)+'</h3><strong class="comparison-total">'+
+    fmt(totals[index].reduce((sum,row)=>sum+row.count,0))+
+    '</strong></div>'
+  ).join("");
+  const donuts=values.map((value,index)=>
+    '<div>'+integratedDonutSvg(normalize(compositionRows[index]),label(value),colors)+'</div>'
+  ).join("");
+  const legend=names.map((name,index)=>
+    '<span><i class="legend-dot" style="background:'+colors[index]+'"></i>'+name+'</span>'
+  ).join("");
+  const compositionTitle=area+(s.sigungu&&s.sigungu!=="전체"?" ":s.sido==="전체"?" 시도 ":" 시군구 ")+"구성비";
+  return '<div class="region-comparison-stack">'+
+    '<div class="panel"><h3>'+area+' 등록대수</h3>'+bars(barRows,"var(--orange)")+'</div>'+
+    '<div class="panel"><h3>'+area+' 등록대수 비교</h3><div class="comparison-grid">'+totalCards+'</div></div>'+
+    '<div class="panel"><h3>'+compositionTitle+'</h3><div class="dual-donut">'+donuts+
+    '</div><div class="shared-legend region-shared-legend">'+legend+'</div></div>'+
+    '</div>';
+}
+function renderRegion(){
+  const d=normalizeRegionRows(filterRows("region"));
+  const barBase=d.some(row=>row.sigungu==="전체")?d.filter(row=>row.sigungu==="전체"):d;
+  const g=group(barBase,"sido");
+  const districts=d.filter(row=>row.sigungu!=="전체");
+  const cols=["period","sido","sigungu","count"];
+  const mapCard='<div class="panel region-map-card"><h3>전국 지도</h3>'+mapHtml(sharedFilters.sido)+'</div>';
+  const comparison=regionComparison(d);
+  const visuals=comparison
+    ?'<div class="region-layout">'+mapCard+comparison+'</div>'
+    :'<div class="region-layout">'+mapCard+'<div class="panel"><h3>시도별 등록대수</h3>'+
+      bars(g,"var(--orange)")+'</div></div><div class="chart-grid">'+
+      '<div class="panel"><h3>시군구별 비교</h3>'+
+      bars(group(districts,"sigungu"),"var(--orange)")+'</div>'+
+      '<div class="panel"><h3>구성비</h3>'+donut(group(districts,"sigungu"))+
+      '</div></div>';
+  $("#regionPane").innerHTML=controls("region")+visuals+tableArea("region",d,cols);
+  bind("region",renderRegion,()=>normalizeRegionRows(filterRows("region")),cols);
+  $$('[data-map-sido]').forEach(button=>button.addEventListener("click",()=>{
+    sharedFilters.sido=button.dataset.mapSido;
+    state.region.sigungu="전체";
+    syncCarFilters("region",true);
+    renderSharedControls();
+    renderRegion();
+  }));
+}
+function categoryComparison(data,key,title,color){const years=sharedFilters.years.filter(v=>v!=="전체"),months=sharedFilters.months.filter(v=>v!=="전체");let axis="",values=[];if(years.length===2){axis="year";values=years}else if(months.length===2){axis="month";values=months}else return"";const label=value=>axis==="year"?(value+(months.length===1?"-"+months[0]:"년")):((years.length===1?years[0]+"-":"")+value),selectPeriod=(source,value)=>source.filter(row=>axis==="year"?row.period.slice(0,4)===value:row.period.slice(5,7)===value),periodRows=values.map(value=>selectPeriod(data,value)),area=sharedFilters.sido==="전체"?"전국":sharedFilters.sido,combined={};periodRows.forEach(source=>group(source,key).forEach(item=>combined[item.name]=(combined[item.name]||0)+item.value));const names=Object.entries(combined).sort((a,b)=>b[1]-a[1]).slice(0,4).map(item=>item[0]);if(Object.keys(combined).length>names.length)names.push("기타");const colors=["#35d0ba","#ffb86b","#c792ea","#ff7aa2","#70b7ff"],normalize=source=>{const byName=Object.fromEntries(group(source,key).map(item=>[item.name,item.value]));return names.map(name=>({name,value:name==="기타"?Object.entries(byName).filter(item=>!names.includes(item[0])).reduce((sum,item)=>sum+item[1],0):(byName[name]||0)}))},barRows=[];values.forEach((value,index)=>group(periodRows[index],key).forEach(item=>barRows.push({name:item.name+" ("+label(value)+")",value:item.value})));const totalCards=values.map((value,index)=>'<div><h3>'+label(value)+'</h3><strong class="comparison-total">'+fmt(periodRows[index].reduce((sum,row)=>sum+row.count,0))+'</strong></div>').join(""),donuts=values.map((value,index)=>'<div>'+integratedDonutSvg(normalize(periodRows[index]),label(value),colors)+'</div>').join(""),legend=names.map((name,index)=>'<span><i class="legend-dot" style="background:'+colors[index]+'"></i>'+name+'</span>').join("");return'<div class="panel"><h3>'+title+' 등록대수 비교</h3>'+bars(barRows,color,Infinity)+'</div><div class="panel" style="margin-top:15px"><h3>'+area+' 등록대수 비교</h3><div class="comparison-grid">'+totalCards+'</div></div><div class="panel" style="margin-top:15px"><h3>'+title+' 구성비 비교</h3><div class="dual-donut">'+donuts+'</div><div class="shared-legend">'+legend+'</div></div>'}
+function genderRows(){let data=filterRows("gender").filter(r=>r.gender!=="전체"||r.age!=="전체");if(state.gender.age==="전체")data=data.filter(r=>r.age!=="계");return data}
+function renderUsage(){const d=filterRows("usage").filter(r=>r.usage!=="전체"),g=group(d,"usage"),cols=["period","sido","usage","count"],comparison=categoryComparison(d,"usage","용도별","var(--mint)");$("#usagePane").innerHTML=controls("usage")+(comparison||`<div class="chart-grid"><div class="panel"><h3>용도별 등록대수</h3>${bars(g)}</div><div class="panel"><h3>구성비</h3>${donut(g)}</div></div>`)+tableArea("usage",d,cols);bind("usage",renderUsage,()=>filterRows("usage").filter(r=>r.usage!=="전체"),cols)}
+function renderFuel(){const d=filterRows("fuel").filter(r=>r.fuel!=="전체"),g=group(d,"fuel"),cols=["period","sido","fuel","count"],comparison=categoryComparison(d,"fuel","연료별","var(--purple)");$("#fuelPane").innerHTML=controls("fuel")+(comparison||`<div class="chart-grid"><div class="panel"><h3>연료별 등록대수</h3>${bars(g,"var(--purple)")}</div><div class="panel"><h3>구성비</h3>${donut(g)}</div></div>`)+tableArea("fuel",d,cols);bind("fuel",renderFuel,()=>filterRows("fuel").filter(r=>r.fuel!=="전체"),cols)}
+function renderGender(){const d=genderRows(),g=group(d,"age"),cols=["period","sido","gender","age","count"],comparison=categoryComparison(d,"age","성별·연령별","var(--pink)");$("#genderPane").innerHTML=controls("gender")+(comparison||`<div class="chart-grid"><div class="panel"><h3>성별·연령별 등록대수</h3>${bars(g,"var(--pink)")}</div><div class="panel"><h3>연령대 구성비</h3>${donut(g)}</div></div>`)+tableArea("gender",d,cols);bind("gender",renderGender,genderRows,cols)}
+let faq=[],activeFaqTab='all',activeFaqMain='전체',activeFaqSub='전체';
+function escapeHtml(value){return String(value??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;')}
+function parseQuotedCsv(text){const records=[],row=[],source=text.replace(/^\uFEFF/,'');let field='',quoted=false;for(let i=0;i<source.length;i+=1){const char=source[i],next=source[i+1];if(char==='"'&&quoted&&next==='"'){field+='"';i+=1}else if(char==='"'){quoted=!quoted}else if(char===','&&!quoted){row.push(field);field=''}else if((char==='\n'||char==='\r')&&!quoted){if(char==='\r'&&next==='\n')i+=1;row.push(field);if(row.some(value=>value!==''))records.push([...row]);row.length=0;field=''}else field+=char}row.push(field);if(row.some(value=>value!==''))records.push(row);return records}
+function parseFaqCsv(text){const [headers,...records]=parseQuotedCsv(text);if(!headers)throw new Error('FAQ CSV 헤더가 없습니다.');const names=headers.map(name=>name.trim().replace(/^\uFEFF/,'')),index=name=>names.indexOf(name),companyIndex=index('company'),questionIndex=index('question'),answerIndex=index('answer');if([companyIndex,questionIndex,answerIndex].some(value=>value<0))throw new Error('FAQ CSV 필수 열이 없습니다.');const mainIndex=index('category_main'),subIndex=index('category_sub'),keys={'현대':'hyundai','기아':'kia','쉐보레':'chevrolet'};return records.map(record=>{const company=(record[companyIndex]||'').trim();return[keys[company]||company,company,(record[questionIndex]||'').trim(),(record[answerIndex]||'').trim(),(record[mainIndex]||'').trim(),(record[subIndex]||'').trim()]}).filter(item=>item[0]&&item[2])}
+function faqSelectOptions(values,selected){return['전체',...values].map(value=>`<option value="${escapeHtml(value)}" ${value===selected?'selected':''}>${escapeHtml(value)}</option>`).join('')}
+function faqRender(which){activeFaqTab=which;$$('[data-faq-tab]').forEach(x=>x.classList.toggle('active',x.dataset.faqTab===which));$$('[data-faq]').forEach(x=>x.classList.toggle('active',x.dataset.faq===which));const companyView=faq.filter(x=>which==='all'||x[0]===which),mainValues=[...new Set(companyView.map(x=>x[4]||'미분류'))].sort();if(!['전체',...mainValues].includes(activeFaqMain))activeFaqMain='전체';const mainView=companyView.filter(x=>activeFaqMain==='전체'||(x[4]||'미분류')===activeFaqMain),subValues=[...new Set(mainView.map(x=>x[5]||'미분류'))].sort();if(!['전체',...subValues].includes(activeFaqSub))activeFaqSub='전체';const view=mainView.filter(x=>activeFaqSub==='전체'||(x[5]||'미분류')===activeFaqSub);$('#faqControls').innerHTML=`<label>대분류<select id="faqMain">${faqSelectOptions(mainValues,activeFaqMain)}</select></label><label>소분류<select id="faqSub">${faqSelectOptions(subValues,activeFaqSub)}</select></label>`;$('#faqMain').onchange=event=>{activeFaqMain=event.target.value;activeFaqSub='전체';faqRender(activeFaqTab)};$('#faqSub').onchange=event=>{activeFaqSub=event.target.value;faqRender(activeFaqTab)};$('#faqBody').innerHTML=view.length?view.map(x=>`<article class="card"><h3>${escapeHtml(x[1])}</h3><p>${escapeHtml(x[2])}</p><p class="muted">${escapeHtml(x[3])}</p></article>`).join(''):`<article class="card"><p class="muted">선택한 분류의 FAQ가 없습니다.</p></article>`}
+function show(view){$$('.view').forEach(v=>v.classList.remove('active'));$('#'+view).classList.add('active');$('#carBtn').classList.toggle('active',view==='carView');$('#faqBtn').classList.toggle('active',view==='faqView');$('#carExp').classList.toggle('open',view==='carView');$('#faqExp').classList.toggle('open',view==='faqView')}
+let activeCarTab='all';
+function carTab(tab){activeCarTab=tab;show('carView');renderSharedControls();$$('#carView .tab').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));$$('#carView .pane').forEach(p=>p.classList.toggle('active',p.id===tab+'Pane'));$$('#carExp [data-open]').forEach(b=>b.classList.toggle('active',b.dataset.open===tab));({all:renderAll,region:renderRegion,usage:renderUsage,fuel:renderFuel,gender:renderGender})[tab]?.()}
+$('#carBtn').onclick=()=>carTab('all');$('#faqBtn').onclick=()=>{show('faqView');faqRender('all')};$('#homeCar').onclick=()=>carTab('all');$('#homeFaq').onclick=()=>{show('faqView');faqRender('all')};$$('#carView [data-tab]').forEach(b=>b.onclick=()=>carTab(b.dataset.tab));$$('#carExp [data-open]').forEach(b=>b.onclick=()=>carTab(b.dataset.open));$$('[data-faq-tab]').forEach(b=>b.onclick=()=>{show('faqView');faqRender(b.dataset.faqTab)});$$('[data-faq]').forEach(b=>b.onclick=()=>{show('faqView');faqRender(b.dataset.faq)});
+$('#navToggle').onclick=()=>{const hidden=$('#sidebar').classList.add('hidden');$('#main').classList.add('wide');$('#navRestore').classList.add('show')};$('#navRestore').onclick=()=>{$('#sidebar').classList.remove('hidden');$('#main').classList.remove('wide');$('#navRestore').classList.remove('show')};
+async function loadVehicleCsv(){for(const path of ['data/자동차_등록현황_통합_검증.csv','data/자동차_등록현황_통합.csv']){const response=await fetch(path);if(response.ok)return response.text()}throw new Error('CSV를 읽지 못했습니다.')}
+async function loadFaqCsv(){const response=await fetch('data/faq_data_total.csv');if(!response.ok)throw new Error('FAQ CSV를 읽지 못했습니다.');return parseFaqCsv(await response.text())}
+loadFaqCsv().then(data=>{faq=data;faqRender(activeFaqTab)}).catch(()=>{$('#faqBody').innerHTML='<article class="card"><p class="muted">FAQ 자료를 읽지 못했습니다. data/faq_data_total.csv 경로를 확인하세요.</p></article>'});
+loadVehicleCsv().then(t=>{rows=parseCSV(t);sigunguAliases=buildSigunguAliases(rows);const latest=[...new Set(rows.map(r=>r.period))].sort().at(-1),year=latest.slice(0,4),month=latest.slice(5,7);sharedFilters.years=[year];sharedFilters.months=[month];syncCarFilters();renderSharedControls();renderAll();renderRegion();renderUsage();renderFuel();renderGender();faqRender('all')}).catch(()=>$('#dataStatus').textContent='CSV를 읽지 못했습니다. data 폴더의 통합 CSV 경로를 확인하세요.');
+</script>
+</body></html>
