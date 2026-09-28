@@ -98,7 +98,7 @@ flowchart LR
 
 | 화면 | 우선 데이터 | 보조 데이터 | 비고 |
 |---|---|---|---|
-| 지역별·차종별 | KOSIS API | 검증 CSV | 선택한 기준년월만 API 요청, 2016~2026 |
+| 지역별·차종별 | KOSIS API | MySQL 또는 검증 CSV | 선택한 기준년월만 API 요청, 2016~2026 |
 | 연료별·성별/연령별 | MySQL 또는 검증 CSV | 검증 CSV | 파일 기반 범위와 동일 |
 | FAQ | MySQL | `faq_data_total.csv` | DB 연결 실패 시 CSV 대체 |
 
@@ -156,9 +156,9 @@ MYSQL_DATABASE=vehicle_db
 KOSIS_API_KEY=YOUR_KOSIS_API_KEY
 ```
 
-- MySQL이 없어도 자동차 등록 검증 CSV와 FAQ CSV로 화면을 열 수 있습니다.
-- KOSIS API 키가 없으면 지역별·차종별은 검증 CSV로 자동 대체됩니다.
-- `.env`는 절대 저장소에 올리지 않습니다.
+- MySQL이 연결이 안되도, 내 컴퓨터 내의 자동차 등록 검증 CSV와 FAQ CSV 파일로 화면을 열 수 있습니다.
+- KOSIS API 키가 없거나 연결이 되지 않을 경우에 MySQL을 우선 적으로 연결하고, 마찬가지로 MySQL 접속이 안될경우 내부 파일로 자동 대체됩니다.
+- `.env`는 내 컴퓨터 내에 한해서 관리합니다.
 
 ### Streamlit 대시보드 실행
 
