@@ -1,0 +1,11 @@
+# Byte-compiled / optimized
+__pycache__/
+
+# Streamlit
+.streamlit/secrets.toml
+
+# Environments
+.env
+
+# Visual Studio Code
+.vscode/
