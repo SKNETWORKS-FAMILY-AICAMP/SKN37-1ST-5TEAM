@@ -72,7 +72,7 @@
 
 ### 3.7 시연 영상
 
-[▶ 시연 영상 보기]([docs/media/demo.mp4](https://drive.google.com/file/d/11r8oM9qk9tiUzRkKa_LZW7t5J5namZVo/view?usp=drive_link))
+[▶ 시연 영상 보기](https://drive.google.com/file/d/11r8oM9qk9tiUzRkKa_LZW7t5J5namZVo/view?usp=drive_link)
 
 ## 4. 데이터 아키텍처
 
