@@ -1,7 +1,7 @@
-import requests
 import pandas as pd
 import streamlit as st
 
+from network.network_client import HttpClient
 from datetime import datetime
 
 st.title("자동차 등록 현황")
@@ -35,52 +35,30 @@ REGIONS = [
 # =========================================================
 # KOSIS API
 # =========================================================
-@st.cache_data(ttl = 60 * 60)
-def load_registration_data(year_month: str):
-    """
-    KOSIS에서 특정 월의 자동차 등록 현황 조회
-    year_month: YYYYMM
-    """
+api_key = st.secrets["KOSIS_API_KEY"]
 
-    api_key = st.secrets["KOSIS_API_KEY"]
+base_url = "https://kosis.kr/openapi/Param/statisticsParameterData.do"
 
-    # TODO: URL 교체
-    # https://kosis.kr/openapi/Param/statisticsParameterData.do
-    # ?method=getList
-    # &apiKey=""
-    # &itmId=13103873443T4+
-    # &objL1=ALL
-    # &objL2=13102873443B.0001+
-    # &objL3=ALL
-    # &objL4=&objL5=&objL6=&objL7=&objL8=
-    # &format=json
-    # &jsonVD=Y
-    # &prdSe=M
-    # &startPrdDe=202608
-    # &endPrdDe=202608
-    # &orgId=116
-    # &tblId=DT_MLTM_5498
-    base_url = (
-        "https://kosis.kr/openapi/Param/statisticsParameterData.do"
-        "?method=getList"
-        f"&apiKey={api_key}"
-        "&itmId=13103873443T1+13103873443T2+13103873443T3+13103873443T4+"
-        "&objL1=ALL"
-        "&objL2=13102873443B.0001+"
-        "&objL3=ALL"
-        "&format=json"
-        "&jsonVD=Y"
-        "&prdSe=M"
-        f"&startPrdDe={year_month}"
-        f"&endPrdDe={year_month}"
-        "&orgId=116"
-        "&tblId=DT_MLTM_5498"
-    )
+def fetch_data(year_month: str):
+    params = {
+        "method": "getList",
+        "apiKey": api_key,
+        "itmId": "13103873443T4+",
+        "objL1": "ALL",
+        "objL2": "13102873443B.0001+",
+        "objL3": "ALL",
+        "format": "json",
+        "jsonVD": "Y",
+        "prdSe": "M",
+        "startPrdDe": year_month,
+        "endPrdDe": year_month,
+        "orgId": "116",
+        "tblId": "DT_MLTM_5498"
+    }
+    
+    response = client.get(base_url, params)
 
-    response = requests.get(base_url, timeout = 30)
-    response.raise_for_status()
-
-    return response.json()
+    return client.convert_to_json(response)
 
 # =========================================================
 # API 데이터 → DataFrame
@@ -157,8 +135,10 @@ year_month = f"{selected_year}{selected_month:02d}"
 # =========================================================
 # 데이터 조회
 # =========================================================
+client = HttpClient()
+
 with st.spinner("자동차 등록 데이터를 조회하고 있습니다..."):
-    response_dict = load_registration_data(year_month)
+    response_dict = fetch_data(year_month)
     df = convert_to_dataframe(response_dict)
 
 if df.empty:
