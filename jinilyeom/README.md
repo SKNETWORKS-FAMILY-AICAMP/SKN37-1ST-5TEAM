@@ -12,10 +12,10 @@ KOSIS 자동차 등록 통계와 현대자동차·기아자동차 FAQ를 조회�
 
 ## 기술 스택
 
-- **언어**: Python 3.12
-- **프레임워크**: Streamlit
+- **언어**: Python
+- **UI 프레임워크**: Streamlit
 - **데이터 처리**: Pandas
-- **외부 통신**: Requests, KOSIS OpenAPI
+- **네트워크 라이브러리**: Requests
 - **데이터베이스**: MySQL
 - **크롤링**: Selenium
 
@@ -23,17 +23,19 @@ KOSIS 자동차 등록 통계와 현대자동차·기아자동차 FAQ를 조회�
 
 ```text
 .
-├── app.py                    # Streamlit 앱 진입점과 사이드바 페이지 구성
+├── app.py                      # Streamlit 앱 진입점
 ├── pages/
-│   ├── registration.py       # KOSIS 자동차 등록 현황
-│   └── faq.py                # 현대·기아 FAQ 조회
+│   ├── registration.py         # 자동차 등록 현황
+│   └── faq.py                  # 현대·기아 자동차 FAQ 조회
 ├── components/
-│   ├── charts.py             # 등록 통계 차트 컴포넌트
-│   └── faq_card.py           # FAQ 카드 컴포넌트
-└── crawler/
-    ├── hyundai.py            # 현대 FAQ 크롤링 및 저장
-    ├── kia.py                # 기아 FAQ 크롤링 및 저장
-    └── csv/                  # 크롤러 결과 CSV
+│   ├── charts.py               # 등록 통계 차트 컴포넌트
+│   └── faq_card.py             # FAQ 카드 컴포넌트
+├── crawler/
+│   ├── hyundai.py              # 현대 자동차 FAQ 크롤링 및 저장
+│   ├── kia.py                  # 기아 자동차 FAQ 크롤링 및 저장
+│   └── csv/                    # 크롤러 결과 CSV
+└── network/
+    └── network_client.py       # Requests HTTP 클라이언트
 ```
 
 ## 환경 설정
@@ -41,7 +43,7 @@ KOSIS 자동차 등록 통계와 현대자동차·기아자동차 FAQ를 조회�
 KOSIS OpenAPI 키를 발급받아 `.streamlit/secrets.toml`에 설정합니다.
 
 ```toml
-KOSIS_API_KEY = "your_KOSIS_API_key"
+KOSIS_API_KEY = "YOUR_KOSIS_API_KEY"
 ```
 
 MySQL 접속 정보 설정
@@ -50,8 +52,8 @@ MySQL 접속 정보 설정
 db_config = {
     "host": "localhost",
     "user": "root",
-    "password": "your_database_password",
-    "database": "your_database_name",
+    "password": "YOUR_DATABASE_PASSWORD",
+    "database": "YOUR_DATABASE_NAME",
     "port": 3306,
     "charset": "utf8mb4"
 }
@@ -81,7 +83,8 @@ FAQ 페이지는 아래 데이터베이스와 테이블을 조회합니다.
 | 기아 | `kia_db` | `kia_faq` |
 
 ## 단기 계획
-- [ ] 자동차 등록 현황 화면에서 KOSIS OpenAPI 비즈니스 로직 분리
+- [X] 자동차 등록 현황 화면(registration.py)에서 KOSIS OpenAPI 비즈니스 로직 분리
 - [ ] 현대, 기아 FAQ 수집기 추상화
 - [ ] 자동차 등록 현황 CSV 파일 다운로드 기능 구현
+- [ ] 폴더 구조 변경
 - [ ] README 정리
